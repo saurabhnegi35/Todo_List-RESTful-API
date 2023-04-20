@@ -2,13 +2,13 @@
 const nodeMailer = require("../mailer/nodemailer");
 
 // Defining a function to send the email with the given parameters
-exports.taskMail = (user, task, description, userName, status, dueDate) => {
+exports.taskMail = (userName, user) => {
   // Using our transporter object to send the email
   nodeMailer.transporter.sendMail(
     {
       from: "reachsaurabhnegi@gmail.com", // Sender email address
       to: user, // Receivers email address
-      subject: "Task Added Successfully", // Email subject
+      subject: `Task Deleted Successfully`, // Email subject
 
       // Email body, using HTML and string interpolation to insert dynamic values
       html: `<!DOCTYPE html>
@@ -78,11 +78,8 @@ exports.taskMail = (user, task, description, userName, status, dueDate) => {
           </tr>  -->
           <tr>
             <td>
-              <h1>Hi, ${userName} your task has been added</h1>
-              <p> Task Name = ${task}</p>
-              <p>Task Description = ${description}</p>
-              <p>Task Status = ${status}</p>
-              <p>Task Due Date = ${dueDate}</p>
+              <h1>Hi, ${userName} your task has been Deleted</h1>
+              
             </td>
           </tr>
           <tr>

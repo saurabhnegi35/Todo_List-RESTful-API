@@ -2,11 +2,13 @@
 const Task = require("../models/Task");
 const User = require("../models/User");
 const taskCreateMailer = require("../mailer/taskCreatedMail");
+const taskUpdateMailer = require("../mailer/taskUpdateMail");
+const taskDeleteMailer = require("../mailer/taskDeleteMail");
 
 // Controller function to create a new task
 exports.createTask = async (req, res) => {
   // Extract name and description from the request body
-  const { name, description } = req.body;
+  const { name, description, dueDate } = req.body;
   // Extract user ID from the authenticated user object in the request
   const userId = req.user._id;
   console.log(userId);
@@ -19,11 +21,23 @@ exports.createTask = async (req, res) => {
     console.log(email);
 
     // Create a new task in the database with the extracted fields
-    const task = await Task.create({ name, description, user: userId });
+    const task = await Task.create({
+      name,
+      description,
+      dueDate,
+      user: userId,
+    });
     const status = task.status;
 
     // Send email to user about newly created task
-    taskCreateMailer.taskMail(email, name, description, userName, status);
+    taskCreateMailer.taskMail(
+      email,
+      name,
+      description,
+      userName,
+      status,
+      dueDate
+    );
 
     // Return the created task in the response with a 201 status code
     return res.status(201).json(task);
@@ -37,7 +51,7 @@ exports.createTask = async (req, res) => {
 // Controller function to get a list of tasks
 exports.getTasks = async (req, res) => {
   // Extract user ID from the authenticated user object in the request
-  const { userId } = req.user;
+  const userId = req.user._id;
   // Extract the optional "status" query parameter from the request
   const { status } = req.query;
 
@@ -51,6 +65,7 @@ exports.getTasks = async (req, res) => {
   try {
     // Find tasks in the database that match the constructed query
     const tasks = await Task.find(query);
+    // const name = tasks.name
 
     // Return the found tasks in the response with a 200 status code
     return res.status(200).json(tasks);
@@ -68,9 +83,15 @@ exports.updateTask = async (req, res) => {
   // Extract the task ID from the request parameters
   const { taskId } = req.params;
   // Extract user ID from the authenticated user object in the request
-  const { userId } = req.user;
+  const userId = req.user._id;
 
   try {
+    // Find the user with the given userId and get their email
+    const user = await User.findById(userId);
+    const email = user.email;
+    const userName = user.name;
+    console.log(email);
+
     // Find a task in the database with the extracted task ID and user ID,
     // and update its name, description, and status with the extracted values
     const task = await Task.findOneAndUpdate(
@@ -78,11 +99,25 @@ exports.updateTask = async (req, res) => {
       { name, description, status },
       { new: true }
     );
+    const taskName = task.name;
+    const dueDate = task.dueDate;
+    const taskDescription = task.description;
 
     // If no matching task was found, return a 404 error to the client
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
+
+    // Send email to user about newly created task
+    taskUpdateMailer.taskMail(
+      email,
+      "Updated",
+      taskName,
+      taskDescription,
+      userName,
+      status,
+      dueDate
+    );
 
     // Return the updated task in the response with a 200 status code
     return res.status(200).json(task);
@@ -98,16 +133,24 @@ exports.deleteTask = async (req, res) => {
   // Extract the task ID from the request parameters
   const { taskId } = req.params;
   // Extract user ID from the authenticated user object in the request
-  const { userId } = req.user;
+  const userId = req.user._id;
 
   try {
+    // Find the user with the given userId and get their email
+    const user = await User.findById(userId);
+    const email = user.email;
+    const userName = user.name;
+    console.log(email);
+
     // Find the task to delete and ensure that it belongs to the authenticated user
     const task = await Task.findOneAndDelete({ _id: taskId, user: userId });
-    // If no task was found, return a 404 response
+
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
 
+    // Send email to user about newly created task
+    taskDeleteMailer.taskMail(userName, email);
     // Return a 200 response with a success message if the task was successfully deleted
     return res.status(200).json({ message: "Task deleted successfully" });
   } catch (err) {

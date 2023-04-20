@@ -20,14 +20,15 @@ const taskSchema = new mongoose.Schema(
       enum: ["pending", "completed"],
       default: "pending",
     },
+    dueDate: {
+      type: String,
+      default: null,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    // userEmail: {
-    //   type: String,
-    // },
   },
   {
     // Add timestamp fields to the schema
