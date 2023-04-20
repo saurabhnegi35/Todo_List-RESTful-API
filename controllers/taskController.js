@@ -1,16 +1,29 @@
 // Import the Task model
 const Task = require("../models/Task");
+const User = require("../models/User");
+const taskCreateMailer = require("../mailer/taskCreatedMail");
 
 // Controller function to create a new task
 exports.createTask = async (req, res) => {
   // Extract name and description from the request body
   const { name, description } = req.body;
   // Extract user ID from the authenticated user object in the request
-  const { userId } = req.user;
+  const userId = req.user._id;
+  console.log(userId);
 
   try {
+    // Find the user with the given userId and get their email
+    const user = await User.findById(userId);
+    const email = user.email;
+    const userName = user.name;
+    console.log(email);
+
     // Create a new task in the database with the extracted fields
     const task = await Task.create({ name, description, user: userId });
+    const status = task.status;
+
+    // Send email to user about newly created task
+    taskCreateMailer.taskMail(email, name, description, userName, status);
 
     // Return the created task in the response with a 201 status code
     return res.status(201).json(task);

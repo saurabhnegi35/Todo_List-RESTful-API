@@ -21,6 +21,7 @@ const authMiddleware = (req, res, next) => {
 
     // If the token is valid, add the decoded payload to the request object
     req.user = decoded;
+    // console.log(decoded);
 
     // Call the next middleware function in the chain
     next();
