@@ -13,10 +13,9 @@ exports.createTask = async (req, res) => {
     const task = await Task.create({ name, description, user: userId });
 
     // Return the created task in the response with a 201 status code
-    return res.status(201), json(task);
+    return res.status(201).json(task);
   } catch (err) {
     // Log any errors and return a 500 error to the client
-    console.log(err);
     console.log(err);
     return res.status(500).json({ message: "Server Error" });
   }
