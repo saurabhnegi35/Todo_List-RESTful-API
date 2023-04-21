@@ -2,6 +2,8 @@
 const User = require("../models/User");
 // Importing the JWT library
 const jwt = require("jsonwebtoken");
+// Importing the bcrypt library
+const bcrypt = require("bcrypt");
 // Secret key for JWT authentication
 const JWT_SECRET = "idontknow";
 
@@ -30,20 +32,22 @@ exports.login = async (req, res) => {
     // Finding the user with the given email
     const user = await User.findOne({ email });
     // Checking if the user exists and the password is correct
-    if (!user || user.password != password) {
+    if (!user) {
       // Sending an error response if the credentials are invalid
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    // const isMatch = await user.checkPassword(password);
-    // if (!isMatch) {
-    //   return res.status(401).json({ message: "Invalid credentials" });
-    // }
+    
+    const isMatch = await user.comparePassword(password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
     // Creating a new JWT token with the user's ID and the secret key
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "1h" });
     res.status(200).json({
       // Sending a success response with a message
-      message: "Looged In Successfully",
+      message: "Logged In Successfully",
       // Sending the token as data
       data: token,
     });
