@@ -1,6 +1,8 @@
-// Import the Task model
+// Import the Task and User Model
 const Task = require("../models/Task");
 const User = require("../models/User");
+
+// Import taskCreateMailer, taskUpdateMailer and taskDeleteMailer
 const taskCreateMailer = require("../mailer/taskCreatedMail");
 const taskUpdateMailer = require("../mailer/taskUpdateMail");
 const taskDeleteMailer = require("../mailer/taskDeleteMail");
