@@ -52,8 +52,8 @@ exports.createTask = async (req, res) => {
 exports.getTasks = async (req, res) => {
   // Extract user ID from the authenticated user object in the request
   const userId = req.user._id;
-  // Extract the name and status query parameter from the request
-  const { sort } = req.query;
+  // Extract the sort and select query parameter from the request
+  const { sort, select } = req.query;
   // Construct a query object to filter tasks by user
   const query = { user: userId };
 
@@ -62,8 +62,14 @@ exports.getTasks = async (req, res) => {
 
     // If the Sort Query is present then sort the Data accordingly
     if (sort) {
-      let sortFix = sort.replace(",", " ");
+      let sortFix = sort.split(",").join(" ");
       apiData = apiData.sort(sortFix);
+    }
+
+    // If the Select Query is present then Select the Data accordingly
+    if (select) {
+      let selectFix = select.split(",").join(" ");
+      apiData = apiData.select(selectFix);
     }
 
     // Find tasks in the database that match the constructed query
@@ -83,8 +89,8 @@ exports.getTasks = async (req, res) => {
 exports.filterTask = async (req, res) => {
   // Extract user ID from the authenticated user object in the request
   const userId = req.user._id;
-  // Extract the name and status query parameter from the request
-  const { name, status, sort } = req.query;
+  // Extract the name, status, sort, select query parameter from the request
+  const { name, status, sort, select } = req.query;
 
   // Construct a query object to filter tasks by user and status
   const query = { user: userId };
@@ -102,8 +108,14 @@ exports.filterTask = async (req, res) => {
 
     // If the Sort Query is present then sort the Data accordingly
     if (sort) {
-      let sortFix = sort.replace(",", " ");
+      let sortFix = sort.split(",").join(" ");
       apiData = apiData.sort(sortFix);
+    }
+
+    // If the Select Query is present then Select the Data accordingly
+    if (select) {
+      let selectFix = select.split(",").join(" ");
+      apiData = apiData.select(selectFix);
     }
 
     // Find tasks in the database that match the constructed query
