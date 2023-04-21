@@ -52,13 +52,22 @@ exports.createTask = async (req, res) => {
 exports.getTasks = async (req, res) => {
   // Extract user ID from the authenticated user object in the request
   const userId = req.user._id;
-
+  // Extract the name and status query parameter from the request
+  const { sort } = req.query;
   // Construct a query object to filter tasks by user
   const query = { user: userId };
 
   try {
+    let apiData = Task.find(query);
+
+    // If the Sort Query is present then sort the Data accordingly
+    if (sort) {
+      let sortFix = sort.replace(",", " ");
+      apiData = apiData.sort(sortFix);
+    }
+
     // Find tasks in the database that match the constructed query
-    const tasks = await Task.find(query);
+    const tasks = await apiData;
     // const name = tasks.name
 
     // Return the found tasks in the response with a 200 status code
@@ -75,22 +84,30 @@ exports.filterTask = async (req, res) => {
   // Extract user ID from the authenticated user object in the request
   const userId = req.user._id;
   // Extract the name and status query parameter from the request
-  const { name, status } = req.query;
+  const { name, status, sort } = req.query;
 
   // Construct a query object to filter tasks by user and status
   const query = { user: userId };
 
   // Add "name" and "status" fields to the query object if they exist
   if (name) {
-    query.name = name;
+    query.name = { $regex: name, $options: "i" };
   }
   if (status) {
     query.status = status;
   }
 
   try {
+    let apiData = Task.find(query);
+
+    // If the Sort Query is present then sort the Data accordingly
+    if (sort) {
+      let sortFix = sort.replace(",", " ");
+      apiData = apiData.sort(sortFix);
+    }
+
     // Find tasks in the database that match the constructed query
-    const tasks = await Task.find(query);
+    const tasks = await apiData;
 
     // Return the found tasks in the response with a 200 status code
     return res.status(200).json(tasks);
