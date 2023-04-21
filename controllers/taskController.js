@@ -52,8 +52,8 @@ exports.createTask = async (req, res) => {
 exports.getTasks = async (req, res) => {
   // Extract user ID from the authenticated user object in the request
   const userId = req.user._id;
-  // Extract the sort and select query parameter from the request
-  const { sort, select } = req.query;
+  // Extract the sort, select, page, limit query parameter from the request
+  const { sort, select, page, limit } = req.query;
   // Construct a query object to filter tasks by user
   const query = { user: userId };
 
@@ -72,6 +72,15 @@ exports.getTasks = async (req, res) => {
       apiData = apiData.select(selectFix);
     }
 
+    // Converting the String input into Number
+    let pageNumber = Number(page) || 1;
+    let pageLimit = Number(limit) || 3;
+
+    // Formula For Pagination
+    let skip = (pageNumber - 1) * pageLimit;
+    // Applying Pagination on Data
+    apiData = apiData.skip(skip).limit(pageLimit);
+
     // Find tasks in the database that match the constructed query
     const tasks = await apiData;
     // const name = tasks.name
@@ -89,8 +98,8 @@ exports.getTasks = async (req, res) => {
 exports.filterTask = async (req, res) => {
   // Extract user ID from the authenticated user object in the request
   const userId = req.user._id;
-  // Extract the name, status, sort, select query parameter from the request
-  const { name, status, sort, select } = req.query;
+  // Extract the name, status, sort, select, page and limit query parameter from the request
+  const { name, status, sort, select, page, limit } = req.query;
 
   // Construct a query object to filter tasks by user and status
   const query = { user: userId };
@@ -117,6 +126,15 @@ exports.filterTask = async (req, res) => {
       let selectFix = select.split(",").join(" ");
       apiData = apiData.select(selectFix);
     }
+
+    // Converting the String input into Number
+    let pageNumber = Number(page) || 1;
+    let pageLimit = Number(limit) || 3;
+
+    // Formula For Pagination
+    let skip = (pageNumber - 1) * pageLimit;
+    // Applying Pagination on Data
+    apiData = apiData.skip(skip).limit(pageLimit);
 
     // Find tasks in the database that match the constructed query
     const tasks = await apiData;
