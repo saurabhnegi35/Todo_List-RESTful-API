@@ -1,3 +1,5 @@
+const User = require("../models/User");
+
 // Import the jsonwebtoken module
 const jwt = require("jsonwebtoken");
 // Define a secret key for signing JWTs
@@ -31,5 +33,20 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-// Export the middleware function
-module.exports = authMiddleware;
+const adminMiddleware = async (req, res, next) => {
+  const userId = req.user._id;
+  //console.log(userId);
+
+  const user = await User.findById(userId);
+  const role = user.role;
+  
+  // Check if the user has admin role
+  if (role !== "admin") {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  next();
+};
+
+// Export the middleware function 
+module.exports = { authMiddleware, adminMiddleware };
