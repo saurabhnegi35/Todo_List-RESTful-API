@@ -52,12 +52,38 @@ exports.createTask = async (req, res) => {
 exports.getTasks = async (req, res) => {
   // Extract user ID from the authenticated user object in the request
   const userId = req.user._id;
-  // Extract the optional "status" query parameter from the request
-  const { status } = req.query;
+
+  // Construct a query object to filter tasks by user
+  const query = { user: userId };
+
+  try {
+    // Find tasks in the database that match the constructed query
+    const tasks = await Task.find(query);
+    // const name = tasks.name
+
+    // Return the found tasks in the response with a 200 status code
+    return res.status(200).json(tasks);
+  } catch (err) {
+    // Log any errors and return a 500 error to the client
+    console.log(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Controller function to get a list of filtered tasks
+exports.filterTask = async (req, res) => {
+  // Extract user ID from the authenticated user object in the request
+  const userId = req.user._id;
+  // Extract the name and status query parameter from the request
+  const { name, status } = req.query;
 
   // Construct a query object to filter tasks by user and status
   const query = { user: userId };
 
+  // Add "name" and "status" fields to the query object if they exist
+  if (name) {
+    query.name = name;
+  }
   if (status) {
     query.status = status;
   }
@@ -65,7 +91,6 @@ exports.getTasks = async (req, res) => {
   try {
     // Find tasks in the database that match the constructed query
     const tasks = await Task.find(query);
-    // const name = tasks.name
 
     // Return the found tasks in the response with a 200 status code
     return res.status(200).json(tasks);
