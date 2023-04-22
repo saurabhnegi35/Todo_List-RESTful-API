@@ -1,8 +1,7 @@
-## TODO APP API
-
 # TODO APP API
 
 This Todo API is a web service that allows users to manage their tasks. It provides several endpoints for creating, retrieving, updating, and deleting tasks.
+This API is made using NodeJS and MongoDB as Backend.
 
 ## Application Mechanism
 
@@ -89,3 +88,12 @@ _It facilitates the Admin in:_
 - Run command: npm start
 - Go to https://localhost/7000
 - Keep the Postman App handy.
+
+## Libraries Used
+
+*bcrypt
+*dotenv
+*express
+*jsonwebtoken
+*mongoose
+*nodemailer
