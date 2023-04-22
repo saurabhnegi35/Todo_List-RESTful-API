@@ -69,6 +69,22 @@ _It facilitates the Admin in:_
 
 ![](assets/images/delete.PNG)
 
+8. GET /api/tasks/getAllUsers
+
+![](assets/images/getAllUsers.PNG)
+
+9. GET /api/tasks/getTask/:userId
+
+![](assets/images/getalltasks.PNG)
+
+10. POST /api/tasks/assignExistingTask
+
+![](assets/images/assignexistingtask.PNG)
+
+11.POST /api/tasks/assignNewTask
+
+![](assets/images/assignnewtask.PNG)
+
 ## Folder Structure
 
 - Assets- It contains images files.
