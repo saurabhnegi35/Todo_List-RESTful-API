@@ -107,9 +107,9 @@ _It facilitates the Admin in:_
 
 ## Libraries Used
 
-*bcrypt
-*dotenv
-*express
-*jsonwebtoken
-*mongoose
-*nodemailer
+- bcrypt
+- dotenv
+- express
+- jsonwebtoken
+- mongoose
+- nodemailer
