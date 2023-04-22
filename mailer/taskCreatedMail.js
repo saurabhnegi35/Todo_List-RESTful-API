@@ -21,7 +21,7 @@ exports.taskMail = (user, task, description, userName, status, dueDate) => {
             font-family: Arial, sans-serif;
             font-size: 14px;
             line-height: 1.4;
-            color: #333;
+            color: black !important;
             background-color: #fff;
             margin: 0;
             padding: 0;
@@ -48,9 +48,11 @@ exports.taskMail = (user, task, description, userName, status, dueDate) => {
             border: 0;
             margin: 0 auto;
           }
+          span {
+            font-weight: bolder;
+          }
       
           a {
-            color: #0078e7;
             text-decoration: none;
           }
           .pass{
@@ -71,18 +73,18 @@ exports.taskMail = (user, task, description, userName, status, dueDate) => {
       </head>
       <body>
         <table>
-          <!-- <tr> 
+           <tr> 
             <td>
-              <img src="https://yourcompany.com/images/logo.png" alt="Your Company Logo">
+              <img src="https://img.freepik.com/free-vector/businessman-holding-pencil-big-complete-checklist-with-tick-marks_1150-35019.jpg?size=626&ext=jpg&ga=GA1.2.948255137.1682137778&semt=sph" alt="Your Company Logo">
             </td>
-          </tr>  -->
+          </tr> 
           <tr>
             <td>
               <h1>Hi, ${userName} your task has been added</h1>
-              <p> Task Name = ${task}</p>
-              <p>Task Description = ${description}</p>
-              <p>Task Status = ${status}</p>
-              <p>Task Due Date = ${dueDate}</p>
+              <p> <span>Task Name</span> = ${task}</p>
+              <p> <span>Task Description</span> = ${description}</p>
+              <p> <span>Task Status</span> = ${status}</p>
+              <p> <span>Task Due Date</span> = ${dueDate}</p>
             </td>
           </tr>
           <tr>

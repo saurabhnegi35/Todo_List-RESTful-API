@@ -2,13 +2,21 @@
 const nodeMailer = require("../mailer/nodemailer");
 
 // Defining a function to send the email with the given parameters
-exports.taskMail = (user, update, task, description, userName, status, dueDate) => {
+exports.taskMail = (
+  user,
+  update,
+  task,
+  description,
+  userName,
+  status,
+  dueDate
+) => {
   // Using our transporter object to send the email
   nodeMailer.transporter.sendMail(
     {
-      from: "reachsaurabhnegi@gmail.com",           // Sender email address
+      from: "reachsaurabhnegi@gmail.com", // Sender email address
       to: user, // Receivers email address
-      subject: `Task ${update} Successfully`,       // Email subject
+      subject: `Task ${update} Successfully`, // Email subject
 
       // Email body, using HTML and string interpolation to insert dynamic values
       html: `<!DOCTYPE html>
@@ -21,7 +29,7 @@ exports.taskMail = (user, update, task, description, userName, status, dueDate) 
             font-family: Arial, sans-serif;
             font-size: 14px;
             line-height: 1.4;
-            color: #333;
+            color: black !important;
             background-color: #fff;
             margin: 0;
             padding: 0;
@@ -48,9 +56,12 @@ exports.taskMail = (user, update, task, description, userName, status, dueDate) 
             border: 0;
             margin: 0 auto;
           }
+          span{
+            font-weight: bolder;
+          }
       
           a {
-            color: #0078e7;
+           
             text-decoration: none;
           }
           .pass{
@@ -71,18 +82,18 @@ exports.taskMail = (user, update, task, description, userName, status, dueDate) 
       </head>
       <body>
         <table>
-          <!-- <tr> 
+          <tr> 
             <td>
-              <img src="https://yourcompany.com/images/logo.png" alt="Your Company Logo">
+              <img src="https://img.freepik.com/premium-photo/latest-update-new-level-education-business-concept-progress-step-up-different_738732-509.jpg?size=626&ext=jpg&ga=GA1.1.948255137.1682137778&semt=ais" alt="Your Company Logo">
             </td>
-          </tr>  -->
+          </tr>
           <tr>
             <td>
               <h1>Hi, ${userName} your task has been Updated</h1>
-              <p> Task Name = ${task}</p>
-              <p>Task Description = ${description}</p>
-              <p>Task Status = ${status}</p>
-              <p>Task Due Date = ${dueDate}</p>
+              <p> <span>Task Name</span> = ${task}</p>
+              <p> <span>Task Description</span> = ${description}</p>
+              <p> <span>Task Status</span> = ${status}</p>
+              <p> <span>Task Due Date</span> = ${dueDate}</p>
             </td>
           </tr>
           <tr>

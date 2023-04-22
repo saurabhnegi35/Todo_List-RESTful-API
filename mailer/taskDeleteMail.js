@@ -2,7 +2,7 @@
 const nodeMailer = require("../mailer/nodemailer");
 
 // Defining a function to send the email with the given parameters
-exports.taskMail = (userName, user) => {
+exports.taskMail = (userName, user, name, description) => {
   // Using our transporter object to send the email
   nodeMailer.transporter.sendMail(
     {
@@ -21,7 +21,7 @@ exports.taskMail = (userName, user) => {
             font-family: Arial, sans-serif;
             font-size: 14px;
             line-height: 1.4;
-            color: #333;
+            color: black !important;
             background-color: #fff;
             margin: 0;
             padding: 0;
@@ -50,11 +50,13 @@ exports.taskMail = (userName, user) => {
           }
       
           a {
-            color: #0078e7;
             text-decoration: none;
           }
           .pass{
             font-size: 20px;
+          }
+          span {
+            font-weight: bolder;
           }
       
           h1 {
@@ -71,15 +73,16 @@ exports.taskMail = (userName, user) => {
       </head>
       <body>
         <table>
-          <!-- <tr> 
+          <tr> 
             <td>
-              <img src="https://yourcompany.com/images/logo.png" alt="Your Company Logo">
+              <img src="https://img.freepik.com/free-vector/inbox-cleanup-illustration-concept_114360-905.jpg?size=626&ext=jpg&ga=GA1.1.948255137.1682137778&semt=ais" alt="Your Company Logo">
             </td>
-          </tr>  -->
+          </tr>
           <tr>
             <td>
               <h1>Hi, ${userName} your task has been Deleted</h1>
-              
+              <p><span>Task Name </span> was ${name} </p>
+              <p><span>Task Description </span> - ${description} </p>
             </td>
           </tr>
           <tr>

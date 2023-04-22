@@ -153,7 +153,7 @@ exports.filterTask = async (req, res) => {
 // Controller function to update an existing task
 exports.updateTask = async (req, res) => {
   // Extract name, description, and status from the request body
-  const { name, description, status } = req.body;
+  const { name, description, status, dueDate } = req.body;
   // Extract the task ID from the request parameters
   const { taskId } = req.params;
   // Extract user ID from the authenticated user object in the request
@@ -164,17 +164,18 @@ exports.updateTask = async (req, res) => {
     const user = await User.findById(userId);
     const email = user.email;
     const userName = user.name;
+
     console.log(email);
 
     // Find a task in the database with the extracted task ID and user ID,
     // and update its name, description, and status with the extracted values
     const task = await Task.findOneAndUpdate(
       { _id: taskId, user: userId },
-      { name, description, status },
+      { name, description, status, dueDate },
       { new: true }
     );
     const taskName = task.name;
-    const dueDate = task.dueDate;
+    const taskDueDate = task.dueDate;
     const taskDescription = task.description;
 
     // If no matching task was found, return a 404 error to the client
@@ -190,7 +191,7 @@ exports.updateTask = async (req, res) => {
       taskDescription,
       userName,
       status,
-      dueDate
+      taskDueDate
     );
 
     // Return the updated task in the response with a 200 status code
@@ -216,6 +217,10 @@ exports.deleteTask = async (req, res) => {
     const userName = user.name;
     console.log(email);
 
+    const taskItem = await Task.findById(taskId);
+    const taskName = taskItem.name;
+    const taskDescription = taskItem.description;
+
     // Find the task to delete and ensure that it belongs to the authenticated user
     const task = await Task.findOneAndDelete({ _id: taskId, user: userId });
 
@@ -224,7 +229,7 @@ exports.deleteTask = async (req, res) => {
     }
 
     // Send email to user about newly created task
-    taskDeleteMailer.taskMail(userName, email);
+    taskDeleteMailer.taskMail(userName, email, taskName, taskDescription);
     // Return a 200 response with a success message if the task was successfully deleted
     return res.status(200).json({ message: "Task deleted successfully" });
   } catch (err) {
