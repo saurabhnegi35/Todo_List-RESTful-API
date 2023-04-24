@@ -3,6 +3,9 @@
 This Todo API is a web service that allows users to manage their tasks. It provides several endpoints for creating, retrieving, updating, and deleting tasks.
 This API is made using NodeJS and MongoDB as Backend.
 
+### API Hosted Link
+https://todo-api-3yse.onrender.com
+
 ## Application Mechanism
 
 - There can be 2 types of Users
