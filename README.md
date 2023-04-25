@@ -5,6 +5,7 @@ This API is made using NodeJS and MongoDB as Backend.
 
 ### API Hosted Link
 https://todo-api-3yse.onrender.com
+Initially this will take some time as Server is started again. This is the limitation of Render's Free Teir. And also Latency is quite high 900ms to 1200ms afterward. So please understand that.
 
 ## Application Mechanism
 
