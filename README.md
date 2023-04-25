@@ -4,8 +4,9 @@ This Todo API is a web service that allows users to manage their tasks. It provi
 This API is made using NodeJS and MongoDB as Backend.
 
 ### API Hosted Link
+
 https://todo-api-3yse.onrender.com
-Initially this will take some time as Server is started again. This is the limitation of Render's Free Teir. And also Latency is quite high 900ms to 1200ms afterward. So please understand that.
+Initially this will take some time as Server is started again (around 40s to 1m). This is the limitation of Render's Free Teir. And also Latency is quite high 800ms to 1200ms afterward. So please understand that.
 
 ## Application Mechanism
 
